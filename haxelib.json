@@ -4,7 +4,7 @@
     "url": "https://github.com/jeremyfa/haxe-xmlgrammar",
     "description": "Patch main haxe grammar to get xml syntax highlighting in strings",
     "releasenote": "Initial patcher with vscode support",
-    "version": "0.1.0",
+    "version": "0.1.1",
 
     "contributors": [ "jeremyfa" ],
     "tags": [],

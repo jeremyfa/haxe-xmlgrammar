@@ -1,5 +1,6 @@
 package;
 
+import sys.FileSystem;
 import yaml.Yaml;
 import haxe.io.Path;
 import sys.io.File;
@@ -44,7 +45,7 @@ class Patch {
             generatePatchedGrammar();
 
             if (exportVSCode) {
-                patchVSCode();
+                patchVSCode(vscodeExtPath);
             }
             else if (exportPlist) {
                 Sys.println(patchedGrammarPlist);
@@ -111,8 +112,6 @@ class Patch {
 
     function patchVSCode(?vscodeExtPath:String) {
 
-        var extensionsList:Array<String> = null;
-
         if (vscodeExtPath == null) {
             if (Sys.systemName() == 'Windows') {
                 // Windows
@@ -125,13 +124,12 @@ class Patch {
                 var proc = new sys.io.Process("whoami", []);
                 var user = proc.stdout.readAll().toString().trim();
                 proc.close();
-
                 vscodeExtPath = '/Users/$user/.vscode/extensions';
-                proc = new sys.io.Process("ls", [vscodeExtPath]);
-                extensionsList = proc.stdout.readAll().toString().trim().split("\n");
-                proc.close();
             }
         }
+
+        // Get extensions list
+        var extensionsList = FileSystem.readDirectory(vscodeExtPath);
 
         for (extension in extensionsList) {
             if (extension.startsWith('nadako.vshaxe-')) {

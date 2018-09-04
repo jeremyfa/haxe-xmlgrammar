@@ -30,7 +30,7 @@ This command will detect your installed version of `vshaxe` and patch its haxe g
 haxelib run xmlgrammar --vscode
 ```
 
-On windows, detection of your Visual Studio Code extensions directory is not supported yet, but you can provide your extension directory with ``--vscode-ext-path``. This option can also be used if you want to patch a non-standard vscode extension path.
+On windows, detection of your Visual Studio Code extensions directory is not supported yet, but you could provide your extension directory with ``--vscode-ext-path %USERPROFILE%\.vscode\extensions``. ``--vscode-ext-path`` option can also be used if you want to patch a non-standard vscode extension path.
 
 ```
 haxelib run xmlgrammar --vscode --vscode-ext-path 'path/to/your/.vscode/extensions'
