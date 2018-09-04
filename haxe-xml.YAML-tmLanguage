@@ -1,0 +1,115 @@
+
+  # XML embedded in strings
+  xml-in-single-quoted:
+    name: meta.xml.hx
+    patterns:
+    - include: '#xml-tag-open-in-single-quoted'
+    - include: '#xml-tag-close'
+    - include: '#xml-tag-invalid'
+    - include: '#xml-comments-in-single-quoted'
+  xml-tag-open-in-single-quoted:
+    begin: (<)([a-zA-Z0-9\.:$_]+)
+    end: (?:(/?>)|(?=(?<!\\)'))
+    name: tag.open.hx
+    beginCaptures:
+      '1': {name: punctuation.definition.tag.begin.hx}
+      '2': {name: entity.name.tag.hx}
+    endCaptures:
+      '1': {name: punctuation.definition.tag.end.hx}
+      '2': {name: entity.name.tag.hx}
+    patterns:
+    - include: '#xml-tag-attributes-in-single-quoted'
+  xml-tag-close:
+    match: (</)([^>]+)(>)
+    name: tag.closed.hx
+    captures:
+      '1': {name: punctuation.definition.tag.begin.hx}
+      '2': {name: entity.name.tag.hx}
+      '3': {name: punctuation.definition.tag.end.hx}
+  xml-tag-invalid:
+    name: invalid.illegal.tag.incomplete.hx
+    match: <\s*>
+  xml-comments-in-single-quoted:
+    begin: <[!%]--
+    captures:
+      '0': {name: punctuation.definition.comment.xml}
+    end: (?:(--%?>)|(?=(?<!\\)'))
+    name: comment.block.xml
+  xml-tag-attributes-in-single-quoted:
+    patterns:
+    - include: '#xml-evaluated-code'
+    - include: '#xml-tag-attribute-name'
+    - include: '#xml-string-double-quoted'
+    - include: '#xml-string-single-quoted-escaped'
+    - include: '#xml-braces-in-single-quoted'
+  xml-tag-attribute-name:
+    name: meta.tag.attribute-name.hx
+    match: (?:\$[a-zA-Z0-9\-:]+|\b([a-zA-Z0-9\-:]+))
+    captures:
+      '1': {name: entity.other.attribute-name.haxe}
+  xml-string-double-quoted:
+    begin: '"'
+    end: (?:(")|(?=(?<!\\)'))
+    name: string.quoted.double.hx
+    beginCaptures:
+      '0': {name: punctuation.definition.string.begin.hx}
+    endCaptures:
+      '1': {name: punctuation.definition.string.end.hx}
+      '2': {name: punctuation.definition.string.end.hx}
+    patterns:
+    - include: '#xml-entities'
+  xml-string-single-quoted-escaped:
+    begin: \\'
+    end: (?:(\\')|(?=(?<!\\)'))
+    name: string.quoted.single.haxe
+    beginCaptures:
+      '0': {name: punctuation.definition.string.escaped.begin.hx}
+    endCaptures:
+      '0': {name: punctuation.definition.string.escaped.end.hx}
+    patterns:
+    - include: '#xml-entities'
+  xml-entities:
+    patterns:
+    - name: constant.character.entity.hx
+      match: (&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)
+      captures:
+        '1': {name: punctuation.definition.entity.hx}
+        '3': {name: punctuation.definition.entity.hx}
+    - name: invalid.illegal.bad-ampersand.hx
+      match: '&'
+  xml-braces-in-single-quoted:
+    begin: '{'
+    end: (?:(})|(?=(?<!\\)'))
+    name: meta.brace.curly.hx
+    endCaptures:
+      '0': {name: punctuation.definition.brace.curly.start.hx}
+    beginCaptures:
+      '0': {name: punctuation.definition.brace.curly.end.hx}
+  xml-evaluated-code:
+    patterns:
+    - begin: \$(?=\$)
+      beginCaptures:
+        '0': {name: constant.character.escape.hx}
+      end: \$
+      endCaptures:
+        '0': {name: constant.character.escape.hx}
+      name: string.quoted.single.hx
+    - begin: \\(?=.)
+      beginCaptures:
+        '0': {name: constant.character.escape.hx}
+      end: .
+      endCaptures:
+        '0': {name: constant.character.escape.hx}
+      name: string.quoted.single.hx
+    - begin: (\${)
+      beginCaptures:
+        '0': {name: punctuation.definition.block.begin.hx}
+      end: (})
+      endCaptures:
+        '0': {name: punctuation.definition.block.end.hx}
+      patterns:
+      - include: '#block-contents'
+    - match: (\$)([_a-zA-Z]\w*)
+      captures:
+        '1': {name: punctuation.definition.block.begin.hx}
+        '2': {name: variable.other.hx}

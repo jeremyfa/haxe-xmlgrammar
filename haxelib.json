@@ -1,0 +1,15 @@
+{
+    "name": "xmlgrammar",
+    "license": "MIT",
+    "url": "https://github.com/jeremyfa/haxe-xmlgrammar",
+    "description": "Patch main haxe grammar to get xml syntax highlighting in strings",
+    "releasenote": "Initial patcher with vscode support",
+    "version": "0.1.0",
+
+    "contributors": [ "jeremyfa" ],
+    "tags": [],
+    "dependencies": {
+        "hxssl": "*",
+        "yaml": "1.3.0"
+    }
+}
