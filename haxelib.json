@@ -9,7 +9,7 @@
     "contributors": [ "jeremyfa" ],
     "tags": [],
     "dependencies": {
-        "hxssl": "*",
+        "hxssl": "3.0.0-alpha",
         "yaml": "1.3.0"
     }
 }
