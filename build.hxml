@@ -1,5 +1,4 @@
 -cp .
 -main Patch
--lib hxssl:3.0.0-alpha
 -lib yaml:1.3.0
 -neko run.n
